@@ -42,9 +42,9 @@ function bnBalance()
     r = HTTP.request("GET", string(BINANCE_API_REST, "api/v3/account?", query, "&signature=", doSign(query)), headers)
 
     balances = r2j(r.body)["balances"]
-    message = ""
+    message = "💰 𝐌𝐘 𝐅𝐈𝐀𝐓 𝐀𝐍𝐃 𝐒𝐏𝐎𝐓 𝐖𝐀𝐋𝐋𝐄𝐓 💰\n---------------------------------------------------\n"
     for b in balances
-        parse(Float64, b["free"]) > 0 ? (message = message * b["asset"] * " - " * b["free"] * "\n") : false
+        parse(Float64, b["free"]) > 0 ? (message = message * b["free"] * " " * b["asset"] * "\n") : false
     end
     return message
 end
@@ -92,7 +92,7 @@ run_bot() do msg
     elseif msg.message.text == "/roll"
         sendMessage(text = "$(rand(1:100))")
     elseif msg.message.text == "/bnBalance"
-        sendMessage(text = "After")
+        sendMessage(text = bnBalance())
     elseif msg.message.text == "/myMine"
         sendMessage(text = myMine())
     end
