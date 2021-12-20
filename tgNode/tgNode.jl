@@ -2,7 +2,7 @@ using Telegram, Telegram.API
 using ConfigEnv
 using Sockets
 
-sendlers = Sockets.listen(IPv4("127.0.0.1"), 1999) # This is the year of my birth
+sendlers = Sockets.listen(IPv4("0.0.0.0"), 1999) # This is the year of my birth
 
 # cd("./dev/devOps/tgNode")
 dotenv()
@@ -12,7 +12,7 @@ sendMessage(text  = "Hello world!")
     sock = accept(sendlers)
     @async while isopen(sock)
         echo = Sockets.readuntil(sock, '\0')
-        println(echo)
+        #println(echo)
         sendMessage(text = echo)
         result = echo |> Meta.parse |> eval #parse code
         Sockets.write(sock, string(result, '\0'))
