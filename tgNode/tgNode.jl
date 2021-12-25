@@ -1,19 +1,20 @@
 using Telegram, Telegram.API
 using ConfigEnv
 using Sockets
+using JSON
 
 sendlers = Sockets.listen(IPv4("0.0.0.0"), 1999) # This is the year of my birth
 
-# cd("./dev/devOps/tgNode")
+#cd("/home/rosenrot/devOps/")
 dotenv()
-sendMessage(text  = "Hello world!")
+sendMessage(chat_id = 332968259, text  = "Hello world!")
 
 @async while true
     sock = accept(sendlers)
     @async while isopen(sock)
-        echo = Sockets.readuntil(sock, '\0')
-        #println(echo)
-        sendMessage(text = echo)
+        mail = Sockets.readuntil(sock, '\0')
+        echo = JSON.parse(mail)
+        sendMessage(chat_id = echo["chat_id"], text = echo["message"])
         result = echo |> Meta.parse |> eval #parse code
         Sockets.write(sock, string(result, '\0'))
     end
